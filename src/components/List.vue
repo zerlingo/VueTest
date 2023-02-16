@@ -15,7 +15,6 @@ export default {
   components: {ListItem},
   methods: {
     openChildModal(id) {
-      console.log("id " + id);
       this.$emit('openChildModal', id);
     }
   }

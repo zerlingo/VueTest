@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      title: "Test text title",
+      title: "Cards with modal",
       list: [],
       showModal: false,
       openedItemId: null
@@ -35,14 +35,11 @@ export default {
   methods: {
     toggleModal(value) {
       this.openedItemId = value;
-      console.log("ShowModal = " + this.showModal + value);
       this.showModal = !this.showModal;
     },
 
     modalItem(id) {
-      let item = this.list.find((item) => item.id === id);
-      console.log(item);
-      return item;
+      return this.list.find((item) => item.id === id);
     }
   },
   computed: {

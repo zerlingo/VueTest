@@ -16,7 +16,6 @@ export default {
   methods: {
     openModal() {
       this.$emit('openModal', this.item.id);
-      console.log("Click on item (id: " + this.item.id + ")");
     }
   }
 }
