@@ -1,10 +1,10 @@
 <template>
-  <div @click.self="closeModal" class="backdrop">
+  <a href="#" class="backdrop" @click.self="closeModal">
     <div class="modal">
-      <h2>{{ "ID: " + item.id + " | " + item.title }}</h2>
+      <h2>{{ modalTitle }}</h2>
       <p>{{ item.body }}</p>
     </div>
-  </div>
+  </a>
 </template>
 
 <script>
@@ -17,18 +17,26 @@ export default {
     closeModal() {
       this.$emit('close');
     }
+  },
+  computed: {
+    modalTitle() {
+      return "ID: " + this.item.id + " | " + this.item.title;
+    }
   }
 }
 </script>
 
 <style scoped>
   .backdrop {
+    display: block;
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     background: rgba(0,0,0, 0.5);
+    text-decoration: none;
+    color: inherit;
   }
 
   .modal {
