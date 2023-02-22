@@ -21,6 +21,7 @@
     <div v-else>
       Список ещё не загрузился...
     </div>
+    <p v-if="error">{{ error }}</p>
 
     <Modal v-if="showModal" :item="modalItem(openedItemId)" @close="toggleModal" />
   </div>
@@ -29,44 +30,39 @@
 <script>
 import Modal from './components/Modal.vue';
 import List from "./components/List.vue";
+import { computed, ref } from "vue";
+import getList from "./composables/getList";
 
 export default {
   name: 'App',
-  components: {
-    List,
-    Modal
-  },
-  data() {
-    return {
-      list: [],
-      showModal: false,
-      openedItemId: null,
-      request: 'qui es'
+  components: { List, Modal },
+  setup() {
+    const showModal = ref(false);
+    const openedItemId = ref(null);
+    const request = ref('qui es');
+    const { list, error, load } = getList();
+
+    const modalItem = function (id) {
+      return list.value.find((item) => item.id === id);
     }
+
+    const toggleModal = function(value) {
+      openedItemId.value = value;
+      showModal.value = !showModal.value;
+    };
+
+    const searchResult = computed( () => {
+      return list.value.filter((item) => item.title.includes(request.value) || item.body.includes(request.value));
+    });
+
+    const searchTitle = computed( () => {
+      return "Search results for \"" + request.value + "\": " + searchResult.value.length;
+    });
+
+    load();
+
+    return { showModal, openedItemId, request, list, error, modalItem, toggleModal, searchResult, searchTitle }
   },
-  methods: {
-    toggleModal(value) {
-      console.log('3333');
-      this.openedItemId = value;
-      this.showModal = !this.showModal;
-    },
-    modalItem(id) {
-      return this.list.find((item) => item.id === id);
-    }
-  },
-  computed: {
-    searchResult() {
-      return this.list.filter((item) => item.title.includes(this.request) || item.body.includes(this.request));
-    },
-    searchTitle() {
-      return "Search results for \"" + this.request + "\": " + this.searchResult.length;
-    }
-  },
-  mounted() {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then((response) => response.json())
-        .then((data) => this.list = data.slice(0,20));
-  }
 }
 </script>
 

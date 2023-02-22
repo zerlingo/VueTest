@@ -8,20 +8,21 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   name: "Modal",
-  props: [
-      'item'
-  ],
-  methods: {
-    closeModal() {
-      this.$emit('close');
+  props: ['item'],
+  setup(props, context) {
+    const closeModal = () => {
+      context.emit('close');
     }
-  },
-  computed: {
-    modalTitle() {
-      return "ID: " + this.item.id + " | " + this.item.title;
-    }
+
+    const modalTitle = computed (() => {
+      return "ID: " + props.item.id + " | " + props.item.title;
+    });
+
+    return { modalTitle, closeModal }
   }
 }
 </script>
