@@ -15,15 +15,14 @@ import ListItem from "@/components/ListItem.vue";
 
 export default {
   name: "List",
-  props: [
-    'title', 'list'
-  ],
-  components: {ListItem},
-  methods: {
-    openChildModal(id) {
-      console.log('2222');
-      this.$emit('openChildModal', id);
+  props: ['title', 'list'],
+  components: { ListItem },
+  setup(props, context) {
+    const openChildModal = (id) => {
+      context.emit('openChildModal', id);
     }
+
+    return { openChildModal }
   }
 }
 </script>

@@ -10,21 +10,21 @@
 </template>
 
 <script>
+import { computed } from "vue";
+
 export default {
   name: "ListItem",
-  props: [
-      'item'
-  ],
-  methods: {
-    openModal() {
-      console.log('1111');
-      this.$emit('openModal', this.item.id);
-    }
-  },
-  computed: {
-    itemTitle() {
-      return "ID: " + this.item.id + " | " + this.item.title;
-    }
+  props: ['item'],
+  setup(props, context) {
+    const openModal = () => {
+      context.emit('openModal', props.item.id);
+    };
+
+    const itemTitle =  computed(() => {
+      return "ID: " + props.item.id + " | " + props.item.title;
+    });
+
+    return { openModal, itemTitle }
   }
 }
 </script>
